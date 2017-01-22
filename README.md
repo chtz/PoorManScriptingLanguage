@@ -4,7 +4,7 @@
 public void test3() throws IOException, ScriptException, NoSuchMethodException {
 	assertEquals("HALLO WELT", 
 			new ch.furthermore.pmsl.ScriptFunction("def foo(a,b) ret upper(a + b) end", 
-              ch.furthermore.pmsl.new Helper())
+              	ch.furthermore.pmsl.new Helper())
 		.invoke("hallo", " welt"));
 }
 	
