@@ -1,0 +1,14 @@
+def main()
+  var x = 1
+  var y = 0
+  if x and y or not x and y then
+    y = 200
+  end
+  if x and (y or not x) and y then
+    y = 200
+  end
+  if x and y or not (x and y) then
+    y = 200
+  end
+  ret y
+end

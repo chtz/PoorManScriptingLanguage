@@ -1,0 +1,3 @@
+def main()
+  ret 12+21/7
+end

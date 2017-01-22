@@ -1,0 +1,13 @@
+def main()
+  def foo(x)
+	def bar(a)
+	  ret a * x
+	end
+  
+    var y = bar(x) + 1
+    var z = bar(x) - 1
+  	ret (2 + z) * y / 2 * (bar(bar(x)) - 1)
+  end
+  
+  ret foo(10)
+end

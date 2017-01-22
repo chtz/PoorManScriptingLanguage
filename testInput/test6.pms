@@ -1,0 +1,11 @@
+def main()
+  var x = 1
+  var y = 0
+  if x then
+    y = 100
+  end
+  if x - 1 then
+    y = 200
+  end
+  ret y
+end

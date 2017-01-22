@@ -1,0 +1,6 @@
+def main()
+  def square(x)
+    ret x * x
+  end
+  ret square(10)
+end

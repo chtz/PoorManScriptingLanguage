@@ -1,0 +1,7 @@
+def main()
+  var y = 0
+  for x = 1; x < 10; x = x + 1 do
+    y = y + x
+  end
+  ret y
+end

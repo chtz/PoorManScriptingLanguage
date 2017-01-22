@@ -1,0 +1,4 @@
+def foo(x)
+  ret x + "halli \"hallo\" kart-
+off\nel"
+end

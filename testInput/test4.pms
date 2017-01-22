@@ -1,0 +1,9 @@
+def main()
+  def foo(x)
+	def foo(y)
+	  ret x + y + 1
+	end
+    ret foo(x) * 2
+  end
+  ret foo(10)
+end
