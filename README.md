@@ -8,7 +8,7 @@ public void test3() throws IOException, ScriptException, NoSuchMethodException {
 }
 	
 public final static class Helper {
-	@BuiltIn
+	@ch.furthermore.pmsl.BuiltIn
 	public String upper(String s) {
 		return s.toUpperCase();
 	}
