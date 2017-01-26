@@ -23,9 +23,40 @@ import ch.furthermore.pmsl.ast.ASTTerm;
 import ch.furthermore.pmsl.ast.ASTVarAssignment;
 import ch.furthermore.pmsl.ast.ASTVarDeclaration;
 import ch.furthermore.pmsl.ast.ASTVariable;
-import ch.furthermore.pmsl.ast.ASTNode;
+import ch.furthermore.pmsl.wf.WFAction;
+import ch.furthermore.pmsl.wf.WFNode;
+import ch.furthermore.pmsl.wf.WFTransition;
+import ch.furthermore.pmsl.wf.WFWorkflow;
 
 public class ParserTest {
+	@Test
+	public void testWfWorkflow() throws IOException {
+		Parser parser = parser("workflow foo\nnode start\ntransition to last\nend\nnode last\nend\nend");
+		WFWorkflow e = parser.wfWorkflow();
+		assertEquals("workflow foo\nnode start\ntransition to last\nend\nnode last\nend\nend", toString(e));
+	}
+	
+	@Test
+	public void testWfNode() throws IOException {
+		Parser parser = parser("node start\n transition to foo\n leave\n  a = a + 1\n end\nend");
+		WFNode e = parser.wfNode();
+		assertEquals("node start\ntransition to foo\nleave\na=a+1\nend\nend", toString(e));
+	}
+	
+	@Test
+	public void testWfAction() throws IOException {
+		Parser parser = parser("enter\ncount = count + 1\nend");
+		WFAction e = parser.wfAction();
+		assertEquals("enter\ncount=count+1\nend", toString(e));
+	}
+	
+	@Test
+	public void testTransition() throws IOException {
+		Parser parser = parser("transition to foo if a > b");
+		WFTransition e = parser.wfTransition();
+		assertEquals("transition to foo if a>b", toString(e));
+	}
+	
 	@Test
 	public void testBExpression() throws IOException {
 		Parser parser = parser("a or b");
@@ -57,7 +88,7 @@ public class ParserTest {
 	@Test
 	public void testIf() throws IOException {
 		Parser parser = parser("if a - 1 then\na()\nb()\nend");
-		ASTIf i = parser.ifstatement();
+		ASTIf i = parser.ifStatement();
 		assertEquals("if a-1 then\na()\nb()\nend", toString(i)); 
 	}
 	
@@ -154,7 +185,7 @@ public class ParserTest {
 		return new Scanner(new StringReader(s));
 	}
 
-	private String toString(ASTNode a) {
+	private String toString(Printable a) {
 		StringBuilder sb = new StringBuilder();
 		a.print(sb);
 		return sb.toString();

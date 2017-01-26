@@ -20,6 +20,10 @@ import ch.furthermore.pmsl.ast.ASTTerm;
 import ch.furthermore.pmsl.ast.ASTVarAssignment;
 import ch.furthermore.pmsl.ast.ASTVarDeclaration;
 import ch.furthermore.pmsl.ast.ASTVariable;
+import ch.furthermore.pmsl.wf.WFAction;
+import ch.furthermore.pmsl.wf.WFNode;
+import ch.furthermore.pmsl.wf.WFTransition;
+import ch.furthermore.pmsl.wf.WFWorkflow;
 
 public class Parser {
 	private final Scanner scanner;
@@ -30,6 +34,110 @@ public class Parser {
 		
 		read();
 	}
+	
+	public WFWorkflow wfWorkflow() throws IOException {
+		assertEquals(ScannerTokenType.WORKFLOW_KEYWORD, current().getType());
+		
+		read();
+		
+		assertEquals(ScannerTokenType.IDENTIFIER, current().getType());
+		
+		WFWorkflow wf = new WFWorkflow(current().getValue());
+		
+		read();
+		
+		while (!ScannerTokenType.END_KEYWORD.equals(current.getType())) {
+			wf.add(wfNode());
+		}
+		
+		read();
+		
+		return wf;
+	}
+	
+	WFNode wfNode() throws IOException {
+		if (!ScannerTokenType.NODE_KEYWORD.equals(current().getType())
+				&& !ScannerTokenType.STATE_KEYWORD.equals(current().getType())) 
+		{
+			throw new ParserException(current(), ScannerTokenType.NODE_KEYWORD + " or " + ScannerTokenType.STATE_KEYWORD + " expected");	
+		}
+		
+		ScannerTokenType type = current().getType();
+		
+		read();
+		
+		assertEquals(ScannerTokenType.IDENTIFIER, current().getType());
+		
+		WFNode node = new WFNode(type, current().getValue());
+		
+		read();
+		
+		while (!ScannerTokenType.END_KEYWORD.equals(current.getType())) {
+			if (ScannerTokenType.ENTER_KEYWORD.equals(current().getType())
+					|| ScannerTokenType.LEAVE_KEYWORD.equals(current().getType()))
+			{
+				node.addAction(wfAction());
+			}
+			else if (ScannerTokenType.TRANSITION_KEYWORD.equals(current().getType())) {
+				node.addTransition(wfTransition());
+			}
+			else {
+				throw new ParserException(current(), ScannerTokenType.ENTER_KEYWORD + " or " + ScannerTokenType.LEAVE_KEYWORD + " or " + ScannerTokenType.TRANSITION_KEYWORD + " expected");
+			}
+		}
+		
+		read();
+		
+		return node;
+	}
+	
+	WFAction wfAction() throws IOException {
+		if (!ScannerTokenType.ENTER_KEYWORD.equals(current().getType())
+				&& !ScannerTokenType.LEAVE_KEYWORD.equals(current().getType())) 
+		{
+			throw new ParserException(current(), ScannerTokenType.ENTER_KEYWORD + " or " + ScannerTokenType.LEAVE_KEYWORD + " expected");	
+		}
+
+		WFAction action = new WFAction(ScannerTokenType.ENTER_KEYWORD.equals(current().getType()));
+		
+		read();
+		
+		while (!ScannerTokenType.END_KEYWORD.equals(current.getType())) {
+			ASTStatement s = statement();
+			
+			action.add(s);
+		}
+		
+		read();
+		
+		return action;
+	}
+	
+	WFTransition wfTransition() throws IOException {
+		assertEquals(ScannerTokenType.TRANSITION_KEYWORD, current().getType());
+		
+		read();
+		
+		assertEquals(ScannerTokenType.TO_KEYWORD, current().getType());
+		
+		read();
+		
+		assertEquals(ScannerTokenType.IDENTIFIER, current().getType());
+		
+		WFTransition transition = new WFTransition(current().getValue());
+		
+		read();
+		
+		if (ScannerTokenType.IF_KEYWORD.equals(current().getType())) {
+			read();
+			
+			ASTBExpression condition = bExpression();
+			
+			transition.setCondition(condition);
+		}
+		
+		return transition;
+	}
 
 	ASTStatement statement() throws IOException {
 		if (ScannerTokenType.DEF_KEYWORD.equals(current().getType())) {
@@ -39,7 +147,7 @@ public class Parser {
 			return varDeclaration();
 		}
 		else if (ScannerTokenType.IF_KEYWORD.equals(current().getType())) {
-			return ifstatement();
+			return ifStatement();
 		}
 		else if (ScannerTokenType.FOR_KEYWORD.equals(current().getType())) {
 			return forStatement();
@@ -101,7 +209,7 @@ public class Parser {
 		return forStatement;
 	}
 	
-	ASTIf ifstatement() throws IOException {
+	ASTIf ifStatement() throws IOException {
 		ScannerToken start = current();
 		
 		assertEquals(ScannerTokenType.IF_KEYWORD, current().getType());

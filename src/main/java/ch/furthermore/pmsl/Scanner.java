@@ -31,6 +31,13 @@ public class Scanner {
 		keywordNames.put("false", ScannerTokenType.FALSE_KEYWORD);
 		keywordNames.put("for", ScannerTokenType.FOR_KEYWORD);
 		keywordNames.put("do", ScannerTokenType.DO_KEYWORD);
+		keywordNames.put("transition", ScannerTokenType.TRANSITION_KEYWORD);
+		keywordNames.put("to", ScannerTokenType.TO_KEYWORD);
+		keywordNames.put("enter", ScannerTokenType.ENTER_KEYWORD);
+		keywordNames.put("leave", ScannerTokenType.LEAVE_KEYWORD);
+		keywordNames.put("node", ScannerTokenType.NODE_KEYWORD);
+		keywordNames.put("state", ScannerTokenType.STATE_KEYWORD);
+		keywordNames.put("workflow", ScannerTokenType.WORKFLOW_KEYWORD);
 	}
 
 	public Scanner(Reader reader) {

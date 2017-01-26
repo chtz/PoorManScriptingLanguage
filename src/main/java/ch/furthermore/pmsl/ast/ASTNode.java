@@ -1,8 +1,8 @@
 package ch.furthermore.pmsl.ast;
 
 import ch.furthermore.pmsl.Context;
+import ch.furthermore.pmsl.Printable;
 
-public interface ASTNode {
-	public void print(StringBuilder sb);
+public interface ASTNode extends Printable {
 	public void generate(Context ctx, StringBuilder sb);
 }
