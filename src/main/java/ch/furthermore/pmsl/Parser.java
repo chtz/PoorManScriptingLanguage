@@ -55,7 +55,7 @@ public class Parser {
 		return wf;
 	}
 	
-	WFNode wfNode() throws IOException {
+	public WFNode wfNode() throws IOException {
 		if (!ScannerTokenType.NODE_KEYWORD.equals(current().getType())
 				&& !ScannerTokenType.STATE_KEYWORD.equals(current().getType())) 
 		{
@@ -91,7 +91,7 @@ public class Parser {
 		return node;
 	}
 	
-	WFAction wfAction() throws IOException {
+	public WFAction wfAction() throws IOException {
 		if (!ScannerTokenType.ENTER_KEYWORD.equals(current().getType())
 				&& !ScannerTokenType.LEAVE_KEYWORD.equals(current().getType())) 
 		{
@@ -113,7 +113,7 @@ public class Parser {
 		return action;
 	}
 	
-	WFTransition wfTransition() throws IOException {
+	public WFTransition wfTransition() throws IOException {
 		assertEquals(ScannerTokenType.TRANSITION_KEYWORD, current().getType());
 		
 		read();
@@ -139,7 +139,7 @@ public class Parser {
 		return transition;
 	}
 
-	ASTStatement statement() throws IOException {
+	public ASTStatement statement() throws IOException {
 		if (ScannerTokenType.DEF_KEYWORD.equals(current().getType())) {
 			return definition();
 		}
@@ -171,7 +171,7 @@ public class Parser {
 		}
 	}
 	
-	ASTFor forStatement() throws IOException {
+	public ASTFor forStatement() throws IOException {
 		ScannerToken start = current();
 		
 		assertEquals(ScannerTokenType.FOR_KEYWORD, current().getType());
@@ -209,7 +209,7 @@ public class Parser {
 		return forStatement;
 	}
 	
-	ASTIf ifStatement() throws IOException {
+	public ASTIf ifStatement() throws IOException {
 		ScannerToken start = current();
 		
 		assertEquals(ScannerTokenType.IF_KEYWORD, current().getType());
@@ -284,11 +284,11 @@ public class Parser {
 		return definition;
 	}
 	
-	ASTCall call() throws IOException {
+	public ASTCall call() throws IOException {
 		return call(null, null);
 	}
 	
-	ASTCall call(ScannerToken start, String name) throws IOException {
+	public ASTCall call(ScannerToken start, String name) throws IOException {
 		ASTCall call;
 		if (start == null) {
 			assertEquals(ScannerTokenType.IDENTIFIER, current().getType());
@@ -318,11 +318,11 @@ public class Parser {
 		return call;
 	}
 	
-	ASTVarDeclaration varDeclaration() throws IOException { 
+	public ASTVarDeclaration varDeclaration() throws IOException { 
 		return varDeclaration(true);
 	}
 	
-	ASTVarDeclaration varDeclaration(boolean expectInitialKeyword) throws IOException { 
+	public ASTVarDeclaration varDeclaration(boolean expectInitialKeyword) throws IOException { 
 		ScannerToken start = current();
 		
 		if (expectInitialKeyword) {
@@ -346,11 +346,11 @@ public class Parser {
 		return new ASTVarDeclaration(start, variable, expression);
 	}
 	
-	ASTVarAssignment varAssignment() throws IOException { 
+	public ASTVarAssignment varAssignment() throws IOException { 
 		return varAssignment(null, null);
 	}
 	
-	ASTVarAssignment varAssignment(ScannerToken start, String variable) throws IOException { 
+	public ASTVarAssignment varAssignment(ScannerToken start, String variable) throws IOException { 
 		if (variable == null) {
 			start = current();
 			
@@ -370,7 +370,7 @@ public class Parser {
 		return new ASTVarAssignment(start, variable, expression);
 	}
 	
-	ASTBExpression bExpression() throws IOException {
+	public ASTBExpression bExpression() throws IOException {
 		ASTBExpression expression = new ASTBExpression(current());
 		
 		expression.add(bTerm());
@@ -384,7 +384,7 @@ public class Parser {
 		return expression;
 	}
 	
-	ASTBTerm bTerm() throws IOException {
+	public ASTBTerm bTerm() throws IOException {
 		ASTBTerm term = new ASTBTerm(current());
 		
 		term.add(notBFactor());
@@ -398,7 +398,7 @@ public class Parser {
 		return term;
 	}
 	
-	ASTNotBFactor notBFactor() throws IOException {
+	public ASTNotBFactor notBFactor() throws IOException {
 		ScannerToken start = current();
 		
 		if (ScannerTokenType.NOT_KEYWORD.equals(current().getType())) {
@@ -415,7 +415,7 @@ public class Parser {
 		}
 	}
 	
-	ASTRelation relation() throws IOException {
+	public ASTRelation relation() throws IOException {
 		ScannerToken start = current();
 		
 		ASTExpression leftExpression = expression();
@@ -439,7 +439,7 @@ public class Parser {
 		return relation;
 	}
 	
-	ASTExpression expression() throws IOException {
+	public ASTExpression expression() throws IOException {
 		ASTExpression expression = new ASTExpression(current());
 		
 		expression.add(term());
@@ -455,7 +455,7 @@ public class Parser {
 		return expression;
 	}
 
-	ASTTerm term() throws IOException {
+	public ASTTerm term() throws IOException {
 		ASTTerm term = new ASTTerm(current());
 		
 		term.add(factor());
@@ -471,7 +471,7 @@ public class Parser {
 		return term;
 	}
 	
-	ASTFactor factor() throws IOException {
+	public ASTFactor factor() throws IOException {
 		ScannerToken start = current();
 		
 		if (ScannerTokenType.IDENTIFIER.equals(current().getType())) {

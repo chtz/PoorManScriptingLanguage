@@ -1,9 +1,14 @@
 package ch.furthermore.pmsl.wf;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.script.ScriptException;
+
 import ch.furthermore.pmsl.Printable;
+import ch.furthermore.pmsl.ScriptFunction;
+import ch.furthermore.pmsl.ast.ASTDefinition;
 import ch.furthermore.pmsl.ast.ASTStatement;
 
 public class WFAction implements Printable {
@@ -27,5 +32,19 @@ public class WFAction implements Printable {
 			sb.append('\n');
 		}
 		sb.append("end");
+	}
+
+	public void execute(Token t) throws IOException, ScriptException, NoSuchMethodException {
+		ASTDefinition def = new ASTDefinition(null, "action");
+		for (ASTStatement s : statements) {
+			def.add(s);
+		}
+		
+		StringBuilder script = new StringBuilder();
+		def.printTransform(script, new TokenVarAccessTransformer());
+		
+		ScriptFunction f = new ScriptFunction(script.toString(), t);
+		
+		f.invoke();
 	}
 }

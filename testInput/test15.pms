@@ -1,0 +1,7 @@
+def foo(x,y)
+  var r = 0
+  if y==x then
+    r = 1
+  end
+  ret r
+end

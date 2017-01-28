@@ -12,6 +12,10 @@ import ch.furthermore.pmsl.ast.DefaultTransformer;
 public class TokenVarAccessTransformer extends DefaultTransformer {
 	@Override
 	public ASTNode transform(ASTVariable n) {
+		if ("returnCode".equals(n.getName())) {
+			return n;
+		}
+		
 		ASTCall c = new ASTCall(null, "getTokenVar");
 		ASTExpression varExpr = new ASTExpression(null);
 		ASTTerm varTerm = new ASTTerm(null);
@@ -23,6 +27,10 @@ public class TokenVarAccessTransformer extends DefaultTransformer {
 
 	@Override
 	public ASTNode transform(ASTVarAssignment n) {
+		if ("returnCode".equals(n.getName())) {
+			return n;
+		}
+		
 		ASTCall c = new ASTCall(null, "setTokenVar");
 		ASTExpression varExpr = new ASTExpression(null);
 		ASTTerm varTerm = new ASTTerm(null);
