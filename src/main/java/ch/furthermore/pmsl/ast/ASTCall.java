@@ -20,7 +20,13 @@ public class ASTCall extends AbstractASTNode implements ASTStatement, ASTFactor 
 		parameters.add(parameter);
 	}
 	
-	public void print(StringBuilder sb) {
+	@Override
+	public void printTransform(StringBuilder sb, Transformer transformer) {
+		transformer.transform(this).printTransformInt(sb, transformer);
+	}
+	
+	@Override
+	public void printTransformInt(StringBuilder sb, Transformer transformer) {
 		sb.append(name);
 		sb.append('(');
 		boolean first = true;
@@ -31,7 +37,7 @@ public class ASTCall extends AbstractASTNode implements ASTStatement, ASTFactor 
 			else {
 				sb.append(',');
 			}
-			p.print(sb);
+			transformer.transform(p).printTransformInt(sb, transformer);
 		}
 		sb.append(')');
 	}

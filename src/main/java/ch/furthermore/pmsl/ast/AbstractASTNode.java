@@ -1,6 +1,5 @@
 package ch.furthermore.pmsl.ast;
 
-import ch.furthermore.pmsl.Context;
 import ch.furthermore.pmsl.ScannerToken;
 
 public abstract class AbstractASTNode implements ASTNode {
@@ -9,9 +8,11 @@ public abstract class AbstractASTNode implements ASTNode {
 	public AbstractASTNode(ScannerToken t) {
 		this.t = t;
 	}
-	
-	public abstract void print(StringBuilder sb);
-	public abstract void generate(Context ctx, StringBuilder sb);
+
+	@Override
+	public void print(StringBuilder sb) {
+		printTransform(sb, new DefaultTransformer());
+	}
 
 	public ScannerToken getToken() {
 		return t;

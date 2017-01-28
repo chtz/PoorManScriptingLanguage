@@ -14,11 +14,17 @@ public class ASTVarDeclaration extends AbstractASTNode implements ASTStatement {
 		this.expression = expression;
 	}
 	
-	public void print(StringBuilder sb) {
-		print(sb, true);
+	@Override
+	public void printTransform(StringBuilder sb, Transformer transformer) {
+		transformer.transform(this).printTransformInt(sb, transformer);
 	}
 	
-	public void print(StringBuilder sb, boolean printInitialKeywod) {
+	@Override
+	public void printTransformInt(StringBuilder sb, Transformer transformer) {
+		printTransformInt(sb, true, transformer);
+	}
+	
+	public void printTransformInt(StringBuilder sb, boolean printInitialKeywod, Transformer transformer) {
 		if (printInitialKeywod) {
 			sb.append("var ");
 		}
@@ -27,7 +33,7 @@ public class ASTVarDeclaration extends AbstractASTNode implements ASTStatement {
 		
 		sb.append('=');
 		
-		expression.print(sb);
+		transformer.transform(expression).printTransformInt(sb, transformer);
 	}
 
 	public void generate(Context ctx, StringBuilder sb) {

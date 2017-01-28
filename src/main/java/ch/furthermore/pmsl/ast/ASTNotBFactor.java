@@ -13,12 +13,18 @@ public class ASTNotBFactor extends AbstractASTNode {
 		this.not = not;
 	}
 
-	public void print(StringBuilder sb) {
+	@Override
+	public void printTransform(StringBuilder sb, Transformer transformer) {
+		transformer.transform(this).printTransformInt(sb, transformer);
+	}
+	
+	@Override
+	public void printTransformInt(StringBuilder sb, Transformer transformer) {
 		if (not) {
 			sb.append("not ");
 		}
 		
-		relation.print(sb);
+		transformer.transform(relation).printTransformInt(sb, transformer);
 	}
 
 	public void generate(Context ctx, StringBuilder sb) {

@@ -42,7 +42,13 @@ public class ASTDefinition extends AbstractASTNode implements ASTStatement {
 		statements.add(statement);
 	}
 	
-	public void print(StringBuilder sb) {
+	@Override
+	public void printTransform(StringBuilder sb, Transformer transformer) {
+		transformer.transform(this).printTransformInt(sb, transformer);
+	}
+	
+	@Override
+	public void printTransformInt(StringBuilder sb, Transformer transformer) {
 		sb.append("def ");
 		sb.append(name);
 		sb.append('(');
@@ -58,12 +64,12 @@ public class ASTDefinition extends AbstractASTNode implements ASTStatement {
 		}
 		sb.append(")\n");
 		for (ASTStatement s : statements) {
-			s.print(sb);
+			transformer.transform(s).printTransformInt(sb, transformer);
 			sb.append('\n');
 		}
 		if (returnExpression != null) {
 			sb.append("ret ");
-			returnExpression.print(sb);
+			transformer.transform(returnExpression).printTransformInt(sb, transformer);
 			sb.append('\n');
 		}
 		sb.append("end");

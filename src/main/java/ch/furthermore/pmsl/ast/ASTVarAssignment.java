@@ -13,12 +13,26 @@ public class ASTVarAssignment extends AbstractASTNode implements ASTStatement {
 		this.expression = expression;
 	}
 	
-	public void print(StringBuilder sb) {
+	public String getName() {
+		return name;
+	}
+
+	public ASTExpression getExpression() {
+		return expression;
+	}
+	
+	@Override
+	public void printTransform(StringBuilder sb, Transformer transformer) {
+		transformer.transform(this).printTransformInt(sb, transformer);
+	}
+	
+	@Override
+	public void printTransformInt(StringBuilder sb, Transformer transformer) {
 		sb.append(name);
 		
 		sb.append('=');
 		
-		expression.print(sb);
+		transformer.transform(expression).printTransformInt(sb, transformer);
 	}
 
 	public void generate(Context ctx, StringBuilder sb) {

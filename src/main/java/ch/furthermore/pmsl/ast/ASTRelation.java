@@ -26,8 +26,14 @@ public class ASTRelation extends AbstractASTNode {
 		this.rightExpression = rightExpression;
 	}
 
-	public void print(StringBuilder sb) {
-		leftExpression.print(sb);
+	@Override
+	public void printTransform(StringBuilder sb, Transformer transformer) {
+		transformer.transform(this).printTransformInt(sb, transformer);
+	}
+	
+	@Override
+	public void printTransformInt(StringBuilder sb, Transformer transformer) {
+		transformer.transform(leftExpression).printTransformInt(sb, transformer);
 		
 		if (relOp != null) {
 			switch (relOp) {
@@ -37,7 +43,7 @@ public class ASTRelation extends AbstractASTNode {
 			default: throw new IllegalStateException();
 			}
 			
-			rightExpression.print(sb);
+			transformer.transform(rightExpression).printTransformInt(sb, transformer);
 		}
 	}
 

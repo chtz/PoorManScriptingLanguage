@@ -16,12 +16,18 @@ public class ASTBTerm extends AbstractASTNode {
 		factors.add(factor);
 	}
 
-	public void print(StringBuilder sb) {
+	@Override
+	public void printTransform(StringBuilder sb, Transformer transformer) {
+		transformer.transform(this).printTransformInt(sb, transformer);
+	}
+	
+	@Override
+	public void printTransformInt(StringBuilder sb, Transformer transformer) {
 		for (int i = 0; i < factors.size(); i++) {
 			if (i > 0) {
 				sb.append(" and ");
 			}
-			factors.get(i).print(sb);
+			transformer.transform(factors.get(i)).printTransformInt(sb, transformer);
 		}
 	}
 

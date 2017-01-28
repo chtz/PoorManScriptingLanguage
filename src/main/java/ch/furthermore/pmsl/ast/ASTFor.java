@@ -23,16 +23,30 @@ public class ASTFor extends AbstractASTNode implements ASTStatement {
 		statements.add(statement);
 	}
 	
-	public void print(StringBuilder sb) {
+	@Override
+	public void printTransform(StringBuilder sb, Transformer transformer) {
+		transformer.transform(this).printTransformInt(sb, transformer);
+	}
+	
+	@Override
+	public void printTransformInt(StringBuilder sb, Transformer transformer) {
 		sb.append("for ");
-		declaration.print(sb, false);
+		
+		ASTNode tDecl = transformer.transform(declaration);
+		if (tDecl instanceof ASTVarDeclaration) { //FIXME dirty hack
+			((ASTVarDeclaration) tDecl).printTransformInt(sb, false, transformer);
+		}
+		else {
+			tDecl.printTransformInt(sb, transformer);
+		}
+		
 		sb.append(';');
-		relation.print(sb);
+		transformer.transform(relation).printTransformInt(sb, transformer);
 		sb.append(';');
-		assignment.print(sb);
+		transformer.transform(assignment).printTransformInt(sb, transformer);
 		sb.append(" do\n");
 		for (ASTStatement s : statements) {
-			s.print(sb);
+			transformer.transform(s).printTransformInt(sb, transformer);
 			sb.append('\n');
 		}
 		sb.append("end");

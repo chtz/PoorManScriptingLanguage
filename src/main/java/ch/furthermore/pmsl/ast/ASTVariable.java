@@ -11,8 +11,18 @@ public class ASTVariable extends AbstractASTNode implements ASTFactor {
 		super(token);
 		this.name = name;
 	}
+	
+	public String getName() {
+		return name;
+	}
 
-	public void print(StringBuilder sb) {
+	@Override
+	public void printTransform(StringBuilder sb, Transformer transformer) {
+		transformer.transform(this).printTransformInt(sb, transformer);
+	}
+	
+	@Override
+	public void printTransformInt(StringBuilder sb, Transformer transformer) {
 		sb.append(name);
 	}
 

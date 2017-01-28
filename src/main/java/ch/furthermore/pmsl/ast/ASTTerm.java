@@ -22,7 +22,13 @@ public class ASTTerm extends AbstractASTNode {
 		combiners.add(asterixDivision);
 	}
 	
-	public void print(StringBuilder sb) {
+	@Override
+	public void printTransform(StringBuilder sb, Transformer transformer) {
+		transformer.transform(this).printTransformInt(sb, transformer);
+	}
+	
+	@Override
+	public void printTransformInt(StringBuilder sb, Transformer transformer) {
 		for (int i = 0; i < factors.size(); i++) {
 			if (i > 0) {
 				switch (combiners.get(i - 1)) {
@@ -35,7 +41,7 @@ public class ASTTerm extends AbstractASTNode {
 				default: throw new IllegalStateException();
 				}
 			}
-			factors.get(i).print(sb);
+			transformer.transform(factors.get(i)).printTransformInt(sb, transformer);
 		}
 	}
 
