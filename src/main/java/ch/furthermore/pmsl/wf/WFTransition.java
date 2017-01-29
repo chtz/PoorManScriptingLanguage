@@ -52,7 +52,7 @@ public class WFTransition implements Printable {
 		StringBuilder script = new StringBuilder();
 		def.printTransform(script, new TokenVarAccessTransformer());
 		
-		ScriptFunction f = new ScriptFunction(script.toString(), t);
+		ScriptFunction f = new ScriptFunction(script.toString(), t, t.builtIns);
 		Object o = f.invoke();
 		return ((Number) o).intValue() == 1;
 	}

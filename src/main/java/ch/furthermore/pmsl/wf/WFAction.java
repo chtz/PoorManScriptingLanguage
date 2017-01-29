@@ -43,7 +43,7 @@ public class WFAction implements Printable {
 		StringBuilder script = new StringBuilder();
 		def.printTransform(script, new TokenVarAccessTransformer());
 		
-		ScriptFunction f = new ScriptFunction(script.toString(), t);
+		ScriptFunction f = new ScriptFunction(script.toString(), t, t.builtIns);
 		
 		f.invoke();
 	}

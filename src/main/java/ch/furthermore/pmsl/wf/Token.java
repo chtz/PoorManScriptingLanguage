@@ -16,8 +16,10 @@ import ch.furthermore.pmsl.ScannerTokenType;
 public class Token {
 	public final static String ID_NAME = "id";
 	
-	private WFWorkflow workflow;
-	private String currentNodeName;
+	WFWorkflow workflow;
+	Object builtIns;
+	
+	String currentNodeName;
 	
 	private final Map<String,Object> vars = new HashMap<>();
 	
@@ -31,6 +33,23 @@ public class Token {
 	public Token(WFWorkflow wf) {
 		this();
 		this.workflow = wf;
+	}
+	
+	public Token(WFWorkflow wf, Object builtIns) {
+		this(wf);
+		this.builtIns = builtIns;
+	}
+	
+	public Token findById(String id) {
+		if (id.equals(vars.get(ID_NAME))) {
+			return this;
+		}
+		for (Token t : children) {
+			if (id.equals(t.vars.get(ID_NAME))) {
+				return t;
+			}	
+		}
+		return null;
 	}
 	
 	public void signal() throws NoSuchMethodException, IOException, ScriptException {
@@ -107,7 +126,7 @@ public class Token {
 	}
 	
 	public Token createChild() {
-		Token child = new Token(workflow);
+		Token child = new Token(workflow, builtIns);
 		
 		child.parent = this;
 		children.add(child);

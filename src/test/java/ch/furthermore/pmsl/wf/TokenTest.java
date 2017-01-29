@@ -9,6 +9,7 @@ import javax.script.ScriptException;
 
 import org.junit.Test;
 
+import ch.furthermore.pmsl.BuiltIn;
 import ch.furthermore.pmsl.Parser;
 import ch.furthermore.pmsl.Scanner;
 
@@ -124,8 +125,41 @@ public class TokenTest {
 		assertEquals(333, ((Number)t.getTokenVar("z")).intValue());
 	}
 	
+	@Test
+	public void testState() throws IOException, NoSuchMethodException, ScriptException {
+		WFWorkflow wf = workflow("workflow foo "
+				+ "state a enter httpGet(id, url) end transition to b end "
+				+ "node b end "
+				+ "end");
+		
+		FakeHttpClient h = new FakeHttpClient();
+		Token t = new Token(wf, h);
+		
+		t.setTokenVar("url", "http://www.foo.ch");
+		
+		t.signal();
+		
+		assertEquals("http://www.foo.ch", h.url);
+		assertEquals("a", t.currentNodeName);
+		
+		t.findById(h.tokenId).signal();
+		
+		assertEquals("b", t.currentNodeName);
+	}
+	
 	public WFWorkflow workflow(String s) throws IOException {
 		Parser p = new Parser(new Scanner(new StringReader(s)));
 		return p.wfWorkflow();
+	}
+	
+	public static class FakeHttpClient {
+		public String tokenId;
+		public String url;
+
+		@BuiltIn
+		public void httpGet(String tokenId, String url) {
+			this.tokenId = tokenId;
+			this.url = url;
+		}
 	}
 }
