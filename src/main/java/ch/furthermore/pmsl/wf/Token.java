@@ -17,7 +17,7 @@ public class Token {
 	public final static String ID_NAME = "id";
 	
 	WFWorkflow workflow;
-	Object builtIns;
+	Object builtIns = new Object();
 	
 	String currentNodeName;
 	
