@@ -14,7 +14,7 @@ import ch.furthermore.pmsl.ast.ASTDefinition;
 import ch.furthermore.pmsl.ast.ASTIf;
 
 public class WFTransition implements Printable {
-	private final String name;
+	final String name;
 	private ASTBExpression condition;
 
 	public WFTransition(String name) {
@@ -36,6 +36,10 @@ public class WFTransition implements Printable {
 	}
 
 	public boolean evaluateCondition(Token t) throws IOException, ScriptException, NoSuchMethodException { //FIXME dirty hack
+		if (condition == null) {
+			return true;
+		}
+		
 		ASTDefinition def = new ASTDefinition(null, "action");
 		def.add(parser("var returnCode = 0").statement());
 		

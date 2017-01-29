@@ -12,8 +12,8 @@ import ch.furthermore.pmsl.ast.ASTDefinition;
 import ch.furthermore.pmsl.ast.ASTStatement;
 
 public class WFAction implements Printable {
-	private final boolean enterAction;
-	private final List<ASTStatement> statements = new LinkedList<>();
+	final boolean enterAction;
+	final List<ASTStatement> statements = new LinkedList<>();
 
 	public WFAction(boolean enterAction) {
 		this.enterAction = enterAction;

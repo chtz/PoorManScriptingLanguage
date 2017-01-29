@@ -12,7 +12,20 @@ public class WFWorkflow implements Printable {
 	public WFWorkflow(String name) {
 		this.name = name;
 	}
+	
+	public WFNode getStartNode() {
+		return nodes.get(0);
+	}
 
+	public WFNode getNode(String name) {
+		for (WFNode n : nodes) {
+			if (name.equals(n.name)) {
+				return n;
+			}
+		}
+		return null;
+	}
+	
 	public void add(WFNode node) {
 		nodes.add(node);
 	}

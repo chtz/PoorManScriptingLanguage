@@ -38,6 +38,7 @@ public class Scanner {
 		keywordNames.put("node", ScannerTokenType.NODE_KEYWORD);
 		keywordNames.put("state", ScannerTokenType.STATE_KEYWORD);
 		keywordNames.put("workflow", ScannerTokenType.WORKFLOW_KEYWORD);
+		keywordNames.put("join", ScannerTokenType.JOIN_KEYWORD);
 	}
 
 	public Scanner(Reader reader) {

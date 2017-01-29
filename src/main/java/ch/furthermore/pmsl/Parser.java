@@ -57,9 +57,10 @@ public class Parser {
 	
 	public WFNode wfNode() throws IOException {
 		if (!ScannerTokenType.NODE_KEYWORD.equals(current().getType())
-				&& !ScannerTokenType.STATE_KEYWORD.equals(current().getType())) 
+				&& !ScannerTokenType.STATE_KEYWORD.equals(current().getType())
+				&& !ScannerTokenType.JOIN_KEYWORD.equals(current().getType())) 
 		{
-			throw new ParserException(current(), ScannerTokenType.NODE_KEYWORD + " or " + ScannerTokenType.STATE_KEYWORD + " expected");	
+			throw new ParserException(current(), ScannerTokenType.NODE_KEYWORD + " or " + ScannerTokenType.STATE_KEYWORD + " or " + ScannerTokenType.JOIN_KEYWORD + " expected");	
 		}
 		
 		ScannerTokenType type = current().getType();
