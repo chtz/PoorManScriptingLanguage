@@ -1,4 +1,7 @@
 # PoorManScriptingLanguage
+
+[![Build Status](https://travis-ci.org/chtz/PoorManScriptingLanguage.svg?branch=master)](https://travis-ci.org/chtz/PoorManScriptingLanguage)
+
 ```
 @Test
 public void test3() throws IOException, ScriptException, NoSuchMethodException {
