@@ -21,13 +21,15 @@ public class Token {
 	
 	String currentNodeName;
 	
-	private final Map<String,Object> vars = new HashMap<>();
+	final Map<String,Object> vars = new HashMap<>();
 	
-	private Token parent;
+	Token parent;
 	final List<Token> children = new LinkedList<>();
 	
 	Token() {
-		setTokenVar(ID_NAME, UUID.randomUUID().toString());
+		if (!vars.containsKey(ID_NAME)) {
+			vars.put(ID_NAME, UUID.randomUUID().toString());
+		}
 	}
 	
 	public Token(WFWorkflow wf) {
