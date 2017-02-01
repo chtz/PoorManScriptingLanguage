@@ -15,6 +15,7 @@ public class SerializedToken {
 	public SerializedToken(Token t) {
 		node = t.currentNodeName;
 		vars.putAll(t.vars);
+		
 		for (Token child : t.children) {
 			children.add(new SerializedToken(child));
 		}
@@ -24,12 +25,14 @@ public class SerializedToken {
 		Token t = new Token(wf, builtIns);
 		t.currentNodeName = node;
 		t.vars.putAll(vars);
+		
 		for (SerializedToken st : children) {
 			Token c = st.token(wf, builtIns);
 			
 			c.parent = t;
 			t.children.add(c);
 		}
+		
 		return t;
 	}
 
